@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Diabetes</title>
+</head>
+<body>
+    <h1>Predict Diabetes</h1>
+
+    <!-- Formulir input data -->
+    <form id="predict-form">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br><br>
+
+        <label for="bmi">BMI:</label>
+        <input type="number" id="bmi" name="bmi" required><br><br>
+
+        <label for="glucose">Glucose:</label>
+        <input type="number" id="glucose" name="glucose" required><br><br>
+
+        <label for="insulin">Insulin:</label>
+        <input type="number" id="insulin" name="insulin" required><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    <h2>Prediction Result:</h2>
+    <p id="prediction-result">Please fill in the form and submit.</p>
+
+    <script>
+        // Menangani pengiriman formulir
+        document.getElementById("predict-form").addEventListener("submit", function(event) {
+            event.preventDefault();  // Mencegah pengiriman formulir secara default
+
+            // Mengambil data dari formulir
+            const formData = {
+                age: document.getElementById("age").value,
+                bmi: document.getElementById("bmi").value,
+                glucose: document.getElementById("glucose").value,
+                insulin: document.getElementById("insulin").value
+            };
+
+            // Mengirim data sebagai JSON menggunakan fetch API
+            fetch('http://192.168.110.176:5000/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'  // Menetapkan Content-Type sebagai JSON
+                },
+                body: JSON.stringify(formData)  // Mengirim data formulir dalam format JSON
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Prediction:', data.prediction);  // Log hasil prediksi ke konsol
+
+                // Menampilkan hasil prediksi pada halaman
+                const resultElement = document.getElementById("prediction-result");
+                if (data.prediction === 0) {
+                    resultElement.innerText = `Prediction: No Diabetes\nProbability: ${data.probability}`;
+                } else {
+                    resultElement.innerText = `Prediction: Diabetes\nProbability: ${data.probability}`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while making the prediction.");
+            });
+        });
+    </script>
+</body>
+</html>

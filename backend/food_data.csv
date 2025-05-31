@@ -1,0 +1,144 @@
+Food Name,Glycemic Index,Calories,Carbohydrates,Protein,Fat,Suitable for Diabetes,Suitable for Blood Pressure,Sodium Content,Potassium Content,Magnesium Content,Calcium Content,Fiber Content,Kategori,Category Order
+Alpukat,15,160,9.0,2.0,15.0,0,0,7,485,29,12,6.7,Buah,0
+Raspberry,32,52,12.0,1.2,0.7,0,0,1,151,27,25,6.5,Buah,0
+Pir,38,57,15.3,0.4,0.1,0,0,1,116,7,9,3.1,Buah,0
+Apel,39,52,14.0,0.3,0.2,0,0,0,107,9,6,2.4,Buah,0
+Stroberi,40,29,7.0,0.7,0.3,0,0,1,153,13,16,2.0,Buah,0
+Beri campuran,40,43,10.0,0.7,0.4,0,0,1,77,6,16,2.4,Buah,0
+Buah Beri (campuran),40,43,10.6,0.7,0.4,0,0,1,77,6,16,2.6,Buah,0
+Beri (campuran),40,43,10.6,0.7,0.4,0,0,1,77,6,16,2.6,Buah,0
+Jeruk,42,43,9.0,0.9,0.1,0,0,0,181,10,40,2.3,Buah,0
+Kelapa,45,354,15.0,3.3,33.5,0,0,20,356,32,14,9.0,Buah,0
+Anggur,46,69,18.0,0.7,0.2,0,0,2,191,11,10,0.9,Buah,0
+Pisang,51,96,23.0,1.1,0.2,0,0,1,358,27,5,2.6,Buah,0
+Mangga,51,60,15.0,0.8,0.4,0,0,2,156,9,11,1.6,Buah,0
+Blueberry,53,57,14.0,0.7,0.3,0,0,1,77,9,6,2.4,Buah,0
+Kiwi,53,61,15.0,1.1,0.5,0,0,2,312,17,34,3.0,Buah,0
+Nanas,66,50,13.0,0.5,0.1,0,0,1,180,12,13,1.4,Buah,0
+Semangka,76,30,8.0,0.6,0.2,0,0,1,112,11,8,0.6,Buah,0
+Kangkung,0,49,9.0,4.3,0.9,0,0,38,330,33,150,3.6,Sayur,1
+Jamur,10,22,3.3,3.1,0.3,0,0,5,318,9,3,1.0,Sayur,1
+Bawang Merah/Bombay,10,40,9.3,1.1,0.1,0,0,4,146,10,23,1.7,Sayur,1
+Kubis,10,25,6.0,1.0,0.1,0,0,9,170,12,40,2.2,Sayur,1
+Tomat,15,18,4.0,0.9,0.2,0,0,5,237,11,6,1.2,Sayur,1
+Brokoli,15,55,11.0,4.2,0.6,0,0,33,316,21,47,2.6,Sayur,1
+Bayam,15,23,3.6,2.9,0.4,0,0,79,558,79,99,2.2,Sayur,1
+Selada,15,5,1.0,0.5,0.1,0,0,5,45,8,18,0.5,Sayur,1
+Timun,15,16,3.6,0.7,0.1,0,0,2,147,13,16,0.5,Sayur,1
+Labu Siam,15,17,3.1,1.2,0.2,0,0,3,295,18,16,1.0,Sayur,1
+Paprika,15,31,6.0,1.3,0.3,0,0,1,211,10,10,2.1,Sayur,1
+Kembang Kol,15,25,5.0,2.0,0.3,0,0,30,299,15,22,2.0,Sayur,1
+Seledri,15,6,1.2,0.3,0.1,0,0,35,104,8,40,1.6,Sayur,1
+Terong,15,25,6.0,1.0,0.2,0,0,2,229,14,9,3.0,Sayur,1
+Kale,15,49,8.8,4.3,0.9,0,0,23,330,33,150,2.0,Sayur,1
+Buncis,15,31,7.0,1.8,0.2,0,0,6,209,25,37,3.4,Sayur,1
+Asparagus,15,20,3.7,2.2,0.2,0,0,2,202,14,24,2.0,Sayur,1
+Sayuran kukus,15,62,11.7,2.5,0.6,0,0,28,452,19,54,4.1,Sayur,1
+Artichoke,15,47,10.5,3.3,0.2,0,0,94,343,60,21,5.4,Sayur,1
+Lobak,15,16,3.4,0.7,0.1,0,0,2,202,10,25,1.6,Sayur,1
+Brokoli Kukus,15,55,11.2,3.7,0.6,0,0,33,457,21,47,3.3,Sayur,1
+timun Jepang,15,17,3.1,1.2,0.3,0,0,2,280,18,16,1.0,Sayur,1
+paprika,15,31,6.3,0.9,0.3,0,0,1,175,9,10,2.5,Sayur,1
+kembang kol,15,25,5.3,2.0,0.3,0,0,30,320,15,22,2.0,Sayur,1
+Kubis Brussel,15,43,9.0,3.4,0.3,0,0,25,342,17,36,3.8,Sayur,1
+Mentimun,15,16,3.6,0.7,0.2,0,0,2,147,10,16,0.5,Sayur,1
+Kembang kol,15,25,5.3,2.0,0.3,0,0,30,320,15,22,2.0,Sayur,1
+sayuran korma,25,250,20.0,8.0,16.0,0,0,520,450,30,100,5.0,Sayur,1
+Bawang Putih,30,149,33.1,6.4,0.5,0,0,17,401,25,181,2.1,Sayur,1
+Rumput Laut,35,43,9.6,2.3,0.6,0,0,682,233,60,168,0.5,Sayur,1
+Biryani Sayur,46,323,58.0,6.9,7.4,0,0,242,174,23,65,4.2,Sayur,1
+Wortel,47,41,10.0,0.9,0.2,0,0,69,320,12,33,2.8,Sayur,1
+Terong Parmesan,50,180,10.0,6.0,14.0,0,0,375,204,22,92,5.0,Sayur,1
+Biryani sayur,50,350,50.0,8.0,12.0,0,0,660,320,30,50,4.0,Sayur,1
+Pulao sayur,65,320,50.0,7.0,9.0,0,0,560,240,35,60,3.0,Sayur,1
+Wortel Halwa,85,265,38.0,3.0,12.0,0,0,140,320,20,180,4.0,Sayur,1
+Biji chia,1,486,42.1,16.5,30.7,0,0,16,407,335,631,34.4,Biji-bijian,2
+Biji rami / biji flax,1,534,28.9,18.3,42.2,0,0,30,813,392,255,27.3,Biji-bijian,2
+Jelai,28,354,73.5,12.5,2.3,0,0,8,452,158,33,17.3,Biji-bijian,2
+Biji rami,50,534,28.9,18.3,42.2,0,0,30,813,392,255,27.3,Biji-bijian,2
+Quinoa,53,120,21.3,4.4,1.9,0,0,5,172,64,17,2.8,Biji-bijian,2
+biji gandum,53,120,21.3,4.4,1.9,0,0,7,172,64,17,2.8,Biji-bijian,2
+Oat,55,153,26.3,5.3,2.7,0,0,2,164,79,54,4.0,Biji-bijian,2
+Gandum,55,389,66.0,16.9,6.9,0,0,2,429,177,54,10.6,Biji-bijian,2
+Kacang almond,0,579,21.6,21.2,49.9,0,0,1,733,270,264,12.5,Kacang-kacangan,3
+Kacang kenari,0,654,13.7,15.2,65.2,0,0,2,441,158,98,6.7,Kacang-kacangan,3
+Kacang Almond,0,579,21.7,21.2,49.9,0,0,1,705,268,269,12.5,Kacang-kacangan,3
+kacang almond,0,575,20.0,21.0,49.9,0,0,1,773,70,264,12.2,Kacang-kacangan,3
+Quorn,0,106,4.5,14.0,2.0,0,0,9,433,57,9,2.8,Kacang-kacangan,3
+Selai Almond,0,614,19.0,20.0,55.0,0,0,0,749,303,268,11.6,Kacang-kacangan,3
+Kacang arab,10,269,45.0,15.0,4.2,0,0,24,875,79,80,12.2,Kacang-kacangan,3
+Kacang Tanah,13,567,16.1,25.8,49.2,0,0,18,705,168,92,8.5,Kacang-kacangan,3
+kacang tanah,13,567,16.1,25.8,49.2,0,0,18,705,168,92,8.5,Kacang-kacangan,3
+Kacang tanah,14,567,16.1,25.8,49.2,0,0,18,705,168,92,8.5,Kacang-kacangan,3
+Kacang Kenari,15,654,13.7,15.2,65.2,0,0,2,441,158,98,6.7,Kacang-kacangan,3
+kenari,15,654,13.7,15.2,65.2,0,0,2,441,158,98,6.7,Kacang-kacangan,3
+Kacang hijau,15,31,7.1,1.8,0.2,0,0,6,209,25,37,3.4,Kacang-kacangan,3
+Kacang merah,24,127,22.8,8.7,0.5,0,0,1,403,28,35,6.4,Kacang-kacangan,3
+Kacang Merah,24,333,60.1,23.7,0.8,0,0,2,1405,70,35,24.9,Kacang-kacangan,3
+kacang mete,25,553,30.2,18.2,43.9,0,0,12,565,292,37,3.3,Kacang-kacangan,3
+Kacang Mete,27,553,30.2,18.2,43.9,0,0,12,660,292,37,3.3,Kacang-kacangan,3
+Kacang hitam,30,227,41.4,15.2,0.9,0,0,1,611,120,28,15.0,Kacang-kacangan,3
+Kacang Hitam,30,341,62.4,21.6,1.2,0,0,2,1200,120,211,16.6,Kacang-kacangan,3
+Kacang lentil,32,116,20.0,9.0,0.4,0,0,2,369,36,18,7.9,Kacang-kacangan,3
+Lentil coklat,32,352,60.0,24.0,1.1,0,0,3,731,47,56,10.7,Kacang-kacangan,3
+Kacang polong hijau,48,81,14.5,5.0,0.4,0,0,2,160,24,25,4.1,Kacang-kacangan,3
+Nasi Goreng,0,220,10.0,12.0,16.0,0,0,370,330,70,390,3.0,Karbohidrat,4
+Roti Tandoori,0,106,20.0,3.0,1.0,0,0,221,83,20,13,2.0,Karbohidrat,4
+Kue Paneer,0,290,10.0,12.0,22.0,0,0,620,380,30,450,3.0,Karbohidrat,4
+Nasi Lemon,50,250,40.0,5.0,7.0,0,0,550,70,20,30,1.0,Karbohidrat,4
+Nasi Goreng dan Mie,60,250,25.0,8.0,14.0,0,0,520,300,25,40,3.0,Karbohidrat,4
+Beras merah,68,216,45.8,5.0,1.8,0,0,7,154,43,19,3.5,Karbohidrat,4
+Roti gandum utuh,69,79,15.4,2.9,1.0,0,0,134,82,29,20,2.7,Karbohidrat,4
+Roti Gandum Utuh,69,247,49.0,10.0,2.5,0,0,422,154,61,84,6.3,Karbohidrat,4
+Ubi jalar,70,86,20.0,1.6,0.1,0,0,55,337,23,30,3.0,Karbohidrat,4
+Nasi,73,130,29.0,2.7,0.3,0,0,1,43,7,10,0.4,Karbohidrat,4
+Roti Cokelat,85,247,48.0,9.4,1.8,0,0,381,125,29,80,6.7,Karbohidrat,4
+Kari Sayuran,0,150,12.0,5.0,10.0,0,0,520,380,28,60,3.0,Protein Nabati,5
+Tahu Goreng,15,144,6.1,13.7,8.6,0,0,10,206,52,204,1.5,Protein Nabati,5
+Tahu,15,144,2.4,15.7,8.0,0,0,10,150,37,683,1.1,Protein Nabati,5
+Acar Mangga,40,120,27.0,1.0,0.0,0,0,1100,120,14,27,3.0,Protein Nabati,5
+Biryani vegetarian,50,340,55.0,8.0,10.0,0,0,590,240,30,40,4.0,Protein Nabati,5
+Sambal Mangga,55,40,10.0,0.0,0.0,0,0,100,30,2,5,0.0,Protein Nabati,5
+Ikan Salmon,0,206,0.0,22.0,13.0,0,0,59,628,27,12,0.0, Protein hewani,999
+Dada ayam,0,165,0.0,31.0,3.6,0,0,74,354,29,11,0.0,Protein hewani ,999
+Daging sapi tanpa lemak,0,250,0.0,26.0,17.0,0,0,54,376,20,12,0.0,Protein hewani ,999
+Dada kalkun,0,98,0.0,22.0,1.0,0,0,47,290,22,10,0.0,Protein hewani ,999
+Telur,0,78,0.6,6.0,5.3,0,0,62,63,10,28,0.0,Protein hewani ,999
+Ayam panggang,0,165,0.0,31.0,3.6,0,0,75,393,26,13,0.0,Protein hewani ,999
+Ikan salmon,0,206,0.0,22.2,13.4,0,0,63,380,32,14,0.0,Protein hewani ,999
+Kalkun panggang,0,135,0.0,29.0,1.0,0,0,59,334,25,13,0.0,Protein hewani ,999
+Salmon panggang,0,206,0.0,22.2,13.4,0,0,63,380,32,14,0.0,Protein hewani ,999
+Ayam panggang/oven,0,165,0.0,31.0,3.6,0,0,75,393,26,13,0.0,Protein hewani ,999
+Salmon,0,206,0.0,22.0,13.0,0,0,47,628,32,13,0.0,Protein hewani ,999
+Tuna,0,116,0.0,26.0,1.0,0,0,35,333,22,4,0.0,Protein hewani ,999
+Dada Ayam,0,165,0.0,31.0,3.6,0,0,74,334,29,11,0.0,Protein hewani ,999
+Dada Kalkun,0,161,0.0,30.6,3.2,0,0,66,318,26,15,0.0,Protein hewani ,999
+Daging Sapi Rendah Lemak,0,250,0.0,26.0,17.0,0,0,54,380,21,10,0.0,Protein hewani ,999
+Putih Telur,0,52,0.7,11.0,0.2,0,0,166,147,6,28,0.0,Protein hewani ,999
+ikan tuna,0,116,0.0,26.0,0.8,0,0,35,346,22,9,0.0,Protein hewani ,999
+Daging Sapi Tanpa Lemak,0,250,0.0,26.0,17.0,0,0,55,393,22,11,0.0,Protein hewani ,999
+ikan kod,0,105,0.0,23.0,0.9,0,0,63,429,29,12,0.0,Protein hewani ,999
+Udang,0,85,0.0,20.0,0.9,0,0,119,239,16,56,0.0,Protein hewani ,999
+Daging Domba,0,258,0.0,25.0,17.0,0,0,57,299,23,14,0.0,Protein hewani ,999
+Kari Ayam,0,185,10.0,20.0,7.0,0,0,580,305,36,28,2.0,Protein hewani ,999
+Kari Ikan,0,141,2.0,18.0,7.0,0,0,593,436,39,23,0.0,Protein hewani ,999
+Kari Daging Kambing,0,250,5.0,26.0,15.0,0,0,612,438,37,32,0.0,Protein hewani ,999
+Ayam Mentega,0,360,10.0,24.0,25.0,0,0,820,320,30,50,2.0,Protein hewani ,999
+Ayam Korma,0,270,5.0,29.0,15.0,0,0,540,328,34,68,1.0,Protein hewani ,999
+Ayam Tandoori,0,290,4.0,29.0,18.0,0,0,620,420,33,20,1.0,Protein hewani ,999
+Kari Udang,0,200,10.0,25.0,8.0,0,0,690,380,40,80,1.0,Protein hewani ,999
+Kebab Ayam,0,180,2.0,24.0,9.0,0,0,460,300,25,18,1.0,Protein hewani ,999
+Tikka Ayam,0,180,2.0,25.0,8.0,0,0,380,410,35,20,0.0,Protein hewani ,999
+Ayam Tikka Masala,0,340,12.0,25.0,22.0,0,0,710,390,35,60,2.0,Protein hewani ,999
+Ayam 65,0,290,15.0,25.0,16.0,0,0,680,390,35,60,1.0,Protein hewani ,999
+Daging Kambing Rogan Josh,0,360,12.0,28.0,24.0,0,0,700,410,40,70,2.0,Protein hewani ,999
+Domba Kofta,0,320,8.0,25.0,20.0,0,0,620,380,35,60,2.0,Protein hewani ,999
+Tumis udang,15,140,5.3,25.0,1.7,0,0,230,401,34,53,1.0,Protein hewani ,999
+Shawarma Ayam,20,350,20.0,30.0,18.0,0,0,880,420,35,60,2.0,Protein hewani ,999
+Domba Ouzi,40,450,50.0,20.0,20.0,0,0,820,550,30,120,3.0,Protein hewani ,999
+Ayam,45,420,45.0,25.0,18.0,0,0,720,390,30,80,3.0,Protein hewani ,999
+Ayam Biryani,50,380,45.0,18.0,12.0,0,0,800,220,40,40,2.0,Protein hewani ,999
+Nasi Biryani Daging Kambing,50,480,50.0,28.0,18.0,0,0,1000,420,38,90,2.0,Protein hewani ,999
+Nasi Biryani ,50,450,40.0,25.0,20.0,0,0,850,380,40,60,2.0,Karbohidrat ,999
+Domba Kabsa,50,480,40.0,25.0,22.0,0,0,840,470,30,120,3.0,Protein hewani ,999
+Taco Ikan,70,238,19.7,13.3,11.4,0,0,243,311,35,59,2.4,Protein hewani ,999
