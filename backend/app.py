@@ -162,8 +162,7 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h1>DiabCare Backend Testing Interface - Enhanced GI Filtering</h1>
-        <p>Diabetes prediction and personalized food recommendation system</p>
+        <h1>DiabCare Backend Testing Interface</h1>
         
         <h2>System Status</h2>
         <div class="status-grid">
@@ -179,16 +178,6 @@ HTML_TEMPLATE = """
                 <span>Database</span>
                 <span class="status-{{ 'ok' if db_status else 'error' }}">{{ db_status }}</span>
             </div>
-        </div>
-        
-        <div class="container">
-            <h3>Enhanced GI Filtering Rules:</h3>
-            <ul>
-                <li><strong>Risiko Tinggi:</strong> Hanya makanan GI ≤ 35 (Sangat Rendah)</li>
-                <li><strong>Risiko Sedang:</strong> Hanya makanan GI ≤ 50 (Rendah)</li>
-                <li><strong>Risiko Rendah:</strong> Hanya makanan GI ≤ 50 (Rendah)</li>
-                <li><strong>Personalisasi:</strong> Setiap user mendapat makanan berbeda berdasarkan input unik</li>
-            </ul>
         </div>
     </div>
 
@@ -271,8 +260,7 @@ HTML_TEMPLATE = """
                 let html = `<div class="result">
                     <h3>Prediction Result</h3>
                     <p><strong>Input:</strong> Age=${data.age}, BMI=${data.bmi}, Glucose=${data.glucose}, Insulin=${data.insulin}</p>
-                    <p><strong>Prediction:</strong> ${result.prediction_text} (${result.prediction})</p>
-                    <p><strong>Risk Level:</strong> ${result.risk_level}</p>`;
+                    <p><strong>Prediction:</strong> ${result.prediction_text} (${result.prediction})</p>`;
                 
                 if (result.debug_info) {
                     html += `<p><strong>Reordered Features:</strong> ${result.debug_info.reordered_features.join(',')}</p>`;
@@ -308,8 +296,7 @@ HTML_TEMPLATE = """
                 let html = `<div class="result">
                     <h3>${caseName} Test Result</h3>
                     <p><strong>Input:</strong> Age=${userData.age}, BMI=${userData.bmi}, Glucose=${userData.glucose}, Insulin=${userData.insulin}</p>
-                    <p><strong>Prediction:</strong> ${result.prediction_text} (${result.prediction})</p>
-                    <p><strong>Risk Level:</strong> ${result.risk_level}</p>`;
+                    <p><strong>Prediction:</strong> ${result.prediction_text} (${result.prediction})</p>`;
                 
                 if (result.debug_info) {
                     html += `<p><strong>Reordered Features:</strong> ${result.debug_info.reordered_features.join(',')}</p>`;
@@ -347,8 +334,8 @@ HTML_TEMPLATE = """
                 let html = `<div class="result">
                     <h3>Food Recommendations</h3>
                     <p><strong>Category:</strong> ${result.category_requested}</p>
-                    <p><strong>Risk Level:</strong> ${result.risk_level}</p>
-                    <p><strong>GI Filter:</strong> ${result.gi_filter}</p>
+                    <p><strong>ML Prediction:</strong> ${result.ml_prediction}</p>
+                    <p><strong>GI Strategy:</strong> ${result.gi_strategy}</p>
                     <p><strong>User Seed:</strong> ${result.debug_info?.user_seed || 'N/A'}</p>
                     <pre>${JSON.stringify(result, null, 2)}</pre>
                 </div>`;
@@ -459,46 +446,6 @@ def save_prediction_to_db(age, bmi, glucose, insulin, prediction):
         print(f"[ERROR] Failed to save prediction: {e}")
         return None
 
-def determine_diabetes_risk_level(glucose, insulin, bmi, age):
-    """Determine diabetes risk level based on health parameters"""
-    risk_score = 0
-    
-    # Glucose scoring (most important factor)
-    if glucose >= 126:
-        risk_score += 4  # Diabetic range
-    elif glucose >= 100:
-        risk_score += 2  # Prediabetic range
-    elif glucose >= 90:
-        risk_score += 1  # Elevated normal
-    
-    # Insulin scoring
-    if insulin >= 25:
-        risk_score += 3  # High insulin resistance
-    elif insulin >= 15:
-        risk_score += 2  # Moderate insulin resistance
-    elif insulin >= 10:
-        risk_score += 1  # Mild elevation
-    
-    # BMI scoring
-    if bmi >= 30:
-        risk_score += 2  # Obese
-    elif bmi >= 25:
-        risk_score += 1  # Overweight
-    
-    # Age scoring
-    if age >= 60:
-        risk_score += 2
-    elif age >= 45:
-        risk_score += 1
-    
-    # Determine risk level
-    if risk_score >= 7:
-        return "Risiko Tinggi"
-    elif risk_score >= 4:
-        return "Risiko Sedang"
-    else:
-        return "Risiko Rendah"
-
 def safe_float(value, default=0.0):
     """Safely convert value to float"""
     try:
@@ -521,10 +468,10 @@ def generate_user_seed(age, bmi, glucose, insulin, category):
     return seed
 
 def get_food_recommendations(category, user_data, top_n=5):
-    """Enhanced food recommendations with strict GI filtering and personalization"""
+    """Get food recommendations using ML model prediction and rule-based selection"""
     try:
         if food_data is None:
-            return [], "LOW_RISK", "No Data", {"error": "Food data not available"}
+            return [], "Risiko Rendah", "No Data", {"error": "Food data not available"}
             
         # Category mapping
         category_mapping = {
@@ -549,8 +496,30 @@ def get_food_recommendations(category, user_data, top_n=5):
         glucose = user_data.get('glucose', 100)
         insulin = user_data.get('insulin', 10)
         
-        # Determine diabetes risk level
-        risk_level = determine_diabetes_risk_level(glucose, insulin, bmi, age)
+        # Use ML model to predict diabetes risk
+        ml_prediction = 0  # Default to low risk
+        ml_prediction_text = "Risiko Rendah"
+        
+        if diabetes_model is not None and diabetes_scaler is not None:
+            try:
+                # Reorder features for model
+                reordered_features = reorder_features_for_model(age, bmi, glucose, insulin)
+                
+                # Use DataFrame with feature names to avoid sklearn warning
+                if feature_order is not None:
+                    features_df = pd.DataFrame([reordered_features], columns=feature_order)
+                    features_scaled = diabetes_scaler.transform(features_df)
+                else:
+                    features = np.array([reordered_features])
+                    features_scaled = diabetes_scaler.transform(features)
+                
+                ml_prediction = int(diabetes_model.predict(features_scaled)[0])
+                ml_prediction_text = 'Risiko Tinggi' if ml_prediction == 1 else 'Risiko Rendah'
+                
+            except Exception as e:
+                print(f"[ERROR] ML prediction failed: {e}")
+                ml_prediction = 0
+                ml_prediction_text = "Risiko Rendah"
         
         # Generate unique seed for this user and category combination
         user_seed = generate_user_seed(age, bmi, glucose, insulin, category)
@@ -560,93 +529,53 @@ def get_food_recommendations(category, user_data, top_n=5):
             'csv_category_mapped': csv_category,
             'total_foods_in_category': len(category_foods),
             'user_profile': {'age': age, 'bmi': bmi, 'glucose': glucose, 'insulin': insulin},
-            'risk_level': risk_level,
+            'ml_prediction': ml_prediction,
+            'ml_prediction_text': ml_prediction_text,
             'user_seed': user_seed
         }
         
         if len(category_foods) == 0:
             debug_info['error'] = 'No foods found in category'
-            return [], risk_level, "No GI Filter", debug_info
+            return [], ml_prediction_text, "No Strategy", debug_info
         
-        # ENHANCED GI FILTERING based on risk level
-        foods_before_filter = len(category_foods)
+        # Rule-based food selection strategy based on ML prediction
+        if ml_prediction == 1:  # High Risk - prioritize lowest GI foods
+            category_foods = category_foods.sort_values('Glycemic Index')
+            gi_strategy = "Prioritas GI Terendah (Risiko Tinggi)"
+        else:  # Low Risk - can include higher GI foods
+            # Sort by GI but allow higher values
+            category_foods = category_foods.sort_values('Glycemic Index')
+            gi_strategy = "GI Fleksibel (Risiko Rendah)"
         
-        if risk_level == "Risiko Tinggi":
-            # VERY STRICT: Only foods with GI ≤ 35 (Very Low)
-            category_foods = category_foods[
-                category_foods['Glycemic Index'].apply(lambda x: safe_float(x, 100) <= 35)
-            ].copy()
-            gi_filter = "GI ≤ 35 (Sangat Rendah - Untuk Risiko Tinggi)"
-            
-        elif risk_level == "Risiko Sedang":
-            # STRICT: Only foods with GI ≤ 50 (Low)
-            category_foods = category_foods[
-                category_foods['Glycemic Index'].apply(lambda x: safe_float(x, 100) <= 50)
-            ].copy()
-            gi_filter = "GI ≤ 50 (Rendah - Untuk Risiko Sedang)"
-            
-        else:  # LOW_RISK
-            # MODERATE: Only foods with GI ≤ 50 (Low)
-            category_foods = category_foods[
-                category_foods['Glycemic Index'].apply(lambda x: safe_float(x, 100) <= 50)
-            ].copy()
-            gi_filter = "GI ≤ 50 (Rendah - Untuk Risiko Rendah)"
-        
-        debug_info['filtering'] = {
-            'foods_before_filter': foods_before_filter,
-            'foods_after_filter': len(category_foods),
-            'gi_filter': gi_filter
-        }
-        
-        if len(category_foods) == 0:
-            debug_info['error'] = 'No foods remaining after GI filtering'
-            return [], risk_level, gi_filter, debug_info
-        
-        # Sort by Glycemic Index (lowest first)
-        category_foods = category_foods.sort_values('Glycemic Index')
+        debug_info['gi_strategy'] = gi_strategy
+        debug_info['foods_available'] = len(category_foods)
         
         # PERSONALIZATION: Use user seed for consistent but varied selection
         random.seed(user_seed)
         
         # Get more candidates than needed for variety
         available_foods = len(category_foods)
-        candidates_count = min(available_foods, top_n * 3)  # Get 3x more candidates
         
         if available_foods <= top_n:
             # If we have fewer foods than requested, return all
             selected_foods = category_foods
         else:
-            # Select from top candidates with weighted randomization
-            top_candidates = category_foods.head(candidates_count)
+            if ml_prediction == 1:  # High Risk - focus on lowest GI
+                # Take top 50% lowest GI foods and randomize within that
+                low_gi_count = max(top_n, len(category_foods) // 2)
+                candidates = category_foods.head(low_gi_count)
+            else:  # Low Risk - more variety allowed
+                # Can select from broader range
+                candidates = category_foods
             
-            # Create weights favoring lower GI foods
-            weights = []
-            for idx, (_, food_row) in enumerate(top_candidates.iterrows()):
-                gi = safe_float(food_row.get('Glycemic Index', 55))
-                # Lower GI = higher weight
-                weight = max(1, 50 - gi)  # Ensure positive weight
-                weights.append(weight)
-            
-            # Weighted random selection
-            selected_indices = random.choices(
-                range(len(top_candidates)), 
-                weights=weights, 
-                k=min(top_n, len(top_candidates))
-            )
-            
-            # Remove duplicates while preserving order
-            seen = set()
-            unique_indices = []
-            for idx in selected_indices:
-                if idx not in seen:
-                    seen.add(idx)
-                    unique_indices.append(idx)
-            
-            # Get the selected foods
-            selected_foods = top_candidates.iloc[unique_indices[:top_n]]
-            
-            # Sort selected foods by GI again
-            selected_foods = selected_foods.sort_values('Glycemic Index')
+            # Random selection from candidates
+            if len(candidates) <= top_n:
+                selected_foods = candidates
+            else:
+                selected_indices = random.sample(range(len(candidates)), top_n)
+                selected_foods = candidates.iloc[selected_indices]
+                # Sort selected foods by GI again
+                selected_foods = selected_foods.sort_values('Glycemic Index')
         
         # Format recommendations
         recommendations = []
@@ -665,12 +594,12 @@ def get_food_recommendations(category, user_data, top_n=5):
                 'sugar_content': round(safe_float(food_row.get('Sugar Content', 0)), 1),
                 'sodium_content': round(safe_float(food_row.get('Sodium Content', 0)), 1),
                 'suitable_for_diabetes': int(safe_float(food_row.get('Suitable for Diabetes', 1))),
-                'rating': min(5.0, 5.0 - (gi / 10)),  # Rating based on GI
+                'rating': min(5.0, 5.0 - (gi / 20)),  # Rating based on GI
                 'personalization_score': round(random.uniform(0.7, 0.95), 3),
-                'model_used': 'enhanced_rule_based_algorithm',
-                'gi_category': 'Sangat Rendah' if gi <= 35 else 'Rendah' if gi <= 50 else 'Sedang',
+                'model_used': 'rule_based_with_ml_prediction',
+                'gi_category': 'Sangat Rendah' if gi <= 35 else 'Rendah' if gi <= 50 else 'Sedang' if gi <= 70 else 'Tinggi',
                 'diabetes_friendly': gi <= 50,
-                'recommendation_reason': f'GI {int(gi)} - {"Sangat aman" if gi <= 35 else "Aman" if gi <= 50 else "Terbatas"} untuk diabetes'
+                'recommendation_reason': f'GI {int(gi)} - {"Sangat aman" if gi <= 35 else "Aman" if gi <= 50 else "Perhatikan" if gi <= 70 else "Hindari"} untuk diabetes'
             }
             recommendations.append(food_item)
             
@@ -681,13 +610,13 @@ def get_food_recommendations(category, user_data, top_n=5):
             'average': round(safe_float(selected_foods['Glycemic Index'].mean(), 0), 1) if len(selected_foods) > 0 else 0
         }
         
-        return recommendations, risk_level, gi_filter, debug_info
+        return recommendations, ml_prediction_text, gi_strategy, debug_info
         
     except Exception as e:
         debug_info = {'error': f'Exception: {str(e)}'}
         print(f"[ERROR] Error in food recommendation: {e}")
         traceback.print_exc()
-        return [], "LOW_RISK", "Error", debug_info
+        return [], "Risiko Rendah", "Error", debug_info
 
 @app.route('/')
 def home():
@@ -706,7 +635,7 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    """Diabetes prediction endpoint"""
+    """Diabetes prediction endpoint using ML model only"""
     try:
         if diabetes_model is None or diabetes_scaler is None:
             return jsonify({
@@ -759,9 +688,6 @@ def predict():
         prediction = int(diabetes_model.predict(features_scaled)[0])
         prediction_text = 'Risiko Tinggi' if prediction == 1 else 'Risiko Rendah'
         
-        # Determine detailed risk level for food recommendations
-        risk_level = determine_diabetes_risk_level(glucose, insulin, bmi, age)
-        
         # Save to database
         prediction_id = save_prediction_to_db(age, bmi, glucose, insulin, prediction)
         
@@ -781,14 +707,10 @@ def predict():
             'feature_mapping': feature_mapping
         }
 
-        # Convert prediction text to Indonesian
-        prediction_text_id = 'Risiko Tinggi' if prediction == 1 else 'Risiko Rendah'
-
         return jsonify({
             'success': True,
             'prediction': prediction,
-            'prediction_text': prediction_text_id,
-            'risk_level': risk_level,
+            'prediction_text': prediction_text,
             'prediction_id': prediction_id,
             'input_data': {
                 'age': age,
@@ -798,12 +720,11 @@ def predict():
             },
             'debug_info': debug_info,
             'scaled_input': features_scaled[0].tolist(),
-            'message': f'Prediksi berhasil: {prediction_text_id}',
-            'gi_filtering_info': {
-                'Risiko_Tinggi': 'Hanya makanan GI ≤ 35 (Sangat Rendah)',
-                'Risiko_Sedang': 'Hanya makanan GI ≤ 50 (Rendah)', 
-                'Risiko_Rendah': 'Hanya makanan GI ≤ 50 (Rendah)',
-                'current_user_filter': f'GI ≤ {35 if risk_level == "HIGH_RISK" else 50}'
+            'message': f'Prediksi berhasil: {prediction_text}',
+            'model_info': {
+                'type': 'ML_Model_Only',
+                'categories': ['Risiko Tinggi', 'Risiko Rendah'],
+                'note': 'Menggunakan model ML untuk kategorisasi diabetes'
             },
             'timestamp': datetime.now().isoformat()
         })
@@ -823,7 +744,7 @@ def predict():
 
 @app.route('/recommend_food', methods=['POST'])
 def recommend_food():
-    """Enhanced food recommendation endpoint with strict GI filtering"""
+    """Food recommendation endpoint using ML prediction and rule-based selection"""
     try:
         data = request.json
         if not data:
@@ -856,37 +777,39 @@ def recommend_food():
                     'error': f'Missing user data field: {field}'
                 }), 400
         
-        # Get enhanced recommendations with strict GI filtering
-        recommendations, risk_level, gi_filter, debug_info = get_food_recommendations(category, user_data)
+        # Get recommendations using ML prediction and rule-based selection
+        recommendations, ml_prediction, gi_strategy, debug_info = get_food_recommendations(category, user_data)
         
         if not recommendations:
             return jsonify({
                 'success': False,
-                'error': 'No recommendations found for this category with current GI filtering',
+                'error': 'No recommendations found for this category',
                 'debug_info': debug_info,
-                'suggestion': 'Try a different category or check if foods in this category meet the GI requirements'
+                'suggestion': 'Try a different category'
             }), 404
         
         return jsonify({
             'success': True,
             'recommendations': recommendations,
-            'source': 'enhanced_rule_based_algorithm',
+            'source': 'rule_based_with_ml_prediction',
             'category_requested': category,
             'total_recommendations': len(recommendations),
             'user_profile': user_data,
-            'risk_level': risk_level,
-            'gi_filter': gi_filter,
-            'model_used': 'enhanced_rule_based_algorithm',
+            'ml_prediction': ml_prediction,
+            'gi_strategy': gi_strategy,
+            'model_used': 'rule_based_with_ml_prediction',
             'debug_info': debug_info,
             'personalization_info': {
                 'user_seed': debug_info.get('user_seed'),
                 'unique_selection': 'Each user gets different foods based on their input',
-                'gi_priority': 'Foods sorted by lowest glycemic index first'
+                'strategy': 'ML prediction determines GI prioritization'
             },
-            'filtering_rules': {
-                'Risiko_Tinggi': 'GI ≤ 35 (Sangat Rendah)',
-                'Risiko_Sedang': 'GI ≤ 50 (Rendah)',
-                'Risiko_Rendah': 'GI ≤ 50 (Rendah)'
+            'algorithm_info': {
+                'prediction_method': 'ML Model Only',
+                'food_selection': 'Rule-based Algorithm',
+                'categories': ['Risiko Tinggi', 'Risiko Rendah'],
+                'gi_strategy_high_risk': 'Prioritas GI terendah',
+                'gi_strategy_low_risk': 'GI fleksibel'
             },
             'timestamp': datetime.now().isoformat()
         })
@@ -910,20 +833,20 @@ def health_check():
             'diabetes_scaler': diabetes_scaler is not None,
             'food_data': food_data is not None
         },
-        'enhanced_features': {
-            'strict_gi_filtering': True,
+        'system_features': {
+            'ml_prediction_only': True,
+            'categories': ['Risiko Tinggi', 'Risiko Rendah'],
+            'food_algorithm': 'rule_based',
             'personalized_recommendations': True,
-            'rule_based_algorithm': True,
-            'gi_thresholds': {
-                'HIGH_RISK': '≤ 35 (Sangat Rendah)',
-                'MEDIUM_RISK': '≤ 50 (Rendah)',
-                'LOW_RISK': '≤ 50 (Rendah)'
+            'gi_strategy': {
+                'high_risk': 'Prioritas GI terendah',
+                'low_risk': 'GI fleksibel'
             }
         }
     })
 
 if __name__ == '__main__':
-    print("DiabCare Enhanced Backend Server")
+    print("DiabCare Backend Server - ML Model Only")
     print("=" * 50)
     
     # Initialize database
@@ -936,11 +859,13 @@ if __name__ == '__main__':
     print(f"Database: {'Ready' if db_ready else 'Error'}")
     
     print("=" * 50)
-    print("ENHANCED GI FILTERING RULES:")
-    print(" Risiko Tinggi: Hanya GI ≤ 35 (Sangat Rendah)")
-    print(" Risiko Sedang: Hanya GI ≤ 50 (Rendah)")  
-    print(" Risiko Rendah: Hanya GI ≤ 50 (Rendah)")
-    print(" Rule-based: Tetap menggunakan algoritma rule-based")
+    print("UPDATED SYSTEM RULES:")
+    print(" - Menggunakan HANYA model ML untuk kategorisasi diabetes")
+    print(" - Kategori: Risiko Tinggi (1) atau Risiko Rendah (0)")
+    print(" - Risiko Tinggi: Prioritas makanan GI terendah")
+    print(" - Risiko Rendah: Boleh makanan GI lebih tinggi")
+    print(" - Rekomendasi makanan: Tetap rule-based algorithm")
+    print(" - Personalisasi: Setiap input user berbeda rekomendasinya")
     print("=" * 50)
     print("Web Testing Interface: http://127.0.0.1:5000")
     print("Health Check: http://127.0.0.1:5000/health")

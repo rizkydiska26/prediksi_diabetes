@@ -60,8 +60,8 @@ interface FoodCategory {
 interface FoodRecommendationResponse {
   success: boolean
   recommendations?: FoodRecommendation[]
-  risk_level?: string
-  gi_filter?: string
+  ml_prediction?: string
+  gi_strategy?: string
   debug_info?: {
     user_seed: number
     gi_range: {
@@ -70,10 +70,12 @@ interface FoodRecommendationResponse {
       average: number
     }
   }
-  filtering_rules?: {
-    Risiko_Tinggi: string
-    Risiko_Sedang: string
-    Risiko_Rendah: string
+  algorithm_info?: {
+    prediction_method: string
+    food_selection: string
+    categories: string[]
+    gi_strategy_high_risk: string
+    gi_strategy_low_risk: string
   }
   error?: string // Added error property
 }
@@ -86,7 +88,6 @@ export default function PrediksiPageEnhanced() {
     bmi: "",
   })
   const [prediction, setPrediction] = useState<string | null>(null)
-  const [riskLevel, setRiskLevel] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
@@ -233,7 +234,6 @@ export default function PrediksiPageEnhanced() {
     setLoading(true)
     setError(null)
     setPrediction(null)
-    setRiskLevel(null)
     setAnimateResult(false)
     // Reset food recommendation states
     setSelectedCategory("")
@@ -275,7 +275,6 @@ export default function PrediksiPageEnhanced() {
 
       if (response.ok && data.success) {
         setPrediction(data.prediction === 1 ? "Risiko Tinggi" : "Risiko Rendah")
-        setRiskLevel(data.risk_level)
         setAnimateResult(true)
 
         setTimeout(() => {
@@ -418,7 +417,7 @@ export default function PrediksiPageEnhanced() {
           >
             <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-100 to-blue-100 rounded-full text-green-800 text-sm font-medium mb-4">
               <Calculator className="w-4 h-4 mr-2" />
-              Prediksi Risiko Diabetes 
+              Prediksi Risiko Diabetes
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">
               Prediksi Risiko{" "}
@@ -428,7 +427,7 @@ export default function PrediksiPageEnhanced() {
               Anda
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Masukkan data kesehatan Anda untuk mendapatkan prediksi risiko diabetes dan rekomendasi makanan sehat 
+              Masukkan data kesehatan Anda untuk mendapatkan prediksi risiko diabetes dan rekomendasi makanan sehat
             </p>
           </div>
 
@@ -556,7 +555,7 @@ export default function PrediksiPageEnhanced() {
                       >
                         Hasil Prediksi: {prediction}
                       </h3>
-                      <p className="text-gray-600">Tingkat Risiko: {riskLevel}</p>
+                      <p className="text-gray-600">Berdasarkan Model Machine Learning</p>
                     </div>
                   </div>
 
@@ -566,23 +565,21 @@ export default function PrediksiPageEnhanced() {
                       className={`text-lg ${prediction === "Risiko Tinggi" ? "text-red-600" : "text-green-600"} leading-relaxed mb-4`}
                     >
                       {prediction === "Risiko Tinggi"
-                        ? "Berdasarkan data yang Anda berikan, kemungkinan risiko diabetes Anda cukup tinggi. Disarankan untuk berkonsultasi dengan profesional kesehatan untuk evaluasi lebih lanjut."
-                        : "Berdasarkan data yang Anda berikan, risiko terkena diabetes Anda saat ini terlihat rendah. Tetap jaga gaya hidup sehat dengan pola makan yang seimbang dan rutin beraktivitas fisik."}
+                        ? "Berdasarkan data yang Anda berikan, hasil prediksi menunjukkan kemungkinan risiko diabetes Anda cukup tinggi. Disarankan untuk berkonsultasi dengan profesional kesehatan untuk evaluasi lebih lanjut."
+                        : "Berdasarkan data yang Anda berikan, hasil prediksi menunjukkan risiko terkena diabetes Anda saat ini terlihat rendah. Tetap jaga gaya hidup sehat dengan pola makan yang seimbang dan rutin beraktivitas fisik."}
                     </p>
 
-                    {/* GI Filtering Info */}
+                    {/* ML Model Info */}
                     <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                       <h4 className="font-semibold text-blue-800 mb-2 flex items-center">
                         <Shield className="w-4 h-4 mr-2" />
-                        Filter Makanan untuk Anda
+                        Strategi Rekomendasi Makanan
                       </h4>
                       <p className="text-blue-700 text-sm">
-                        {riskLevel === "Risiko Diabetes Tinggi" &&
-                          "Hanya makanan dengan Indeks Glikemik ≤ 35 (Sangat Rendah) yang akan direkomendasikan"}
-                        {riskLevel === "Risiko Diabetes Sedang" &&
-                          "Hanya makanan dengan Indeks Glikemik ≤ 50 (Rendah) yang akan direkomendasikan"}
-                        {riskLevel === "Risiko Diabetes Rendah" &&
-                          "Hanya makanan dengan Indeks Glikemik ≤ 50 (Rendah) yang akan direkomendasikan"}
+                        {prediction === "Risiko Tinggi" &&
+                          "Akan diprioritaskan makanan dengan Indeks Glikemik terendah untuk kontrol gula darah optimal"}
+                        {prediction === "Risiko Rendah" &&
+                          "Dapat mengonsumsi makanan dengan variasi Indeks Glikemik yang lebih fleksibel"}
                       </p>
                     </div>
                   </div>
@@ -597,9 +594,7 @@ export default function PrediksiPageEnhanced() {
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold text-orange-700">Pilih Kategori Makanan</h3>
-                        <p className="text-gray-600">
-                          Pilih kategori untuk mendapatkan rekomendasi makanan 
-                        </p>
+                        <p className="text-gray-600">Pilih kategori untuk mendapatkan rekomendasi makanan</p>
                       </div>
                     </div>
 
@@ -635,7 +630,7 @@ export default function PrediksiPageEnhanced() {
                       <div className="text-center py-4">
                         <div className="inline-flex items-center gap-2 text-orange-600">
                           <div className="animate-spin h-5 w-5 border-2 border-orange-600 border-t-transparent rounded-full" />
-                          <span>Menganalisis rekomendasi makanan dengan filtering GI...</span>
+                          <span>Menganalisis rekomendasi makanan dengan algoritma rule-based...</span>
                         </div>
                       </div>
                     )}
@@ -651,23 +646,23 @@ export default function PrediksiPageEnhanced() {
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold text-green-700">Rekomendasi Makanan Sehat</h3>
-                        <p className="text-gray-600">{foodResponseData.gi_filter} - Dipersonalisasi untuk Anda</p>
+                        <p className="text-gray-600">{foodResponseData.gi_strategy} - Dipersonalisasi untuk Anda</p>
                       </div>
                     </div>
 
-                    {/* Filtering Summary */}
+                    {/* Algorithm Summary */}
                     <div className="bg-white bg-opacity-60 p-4 rounded-xl mb-6">
                       <div className="grid md:grid-cols-3 gap-4 text-sm">
                         <div className="flex items-center">
                           <Target className="w-4 h-4 mr-2 text-blue-600" />
                           <span>
-                            <strong>Tingkat Risiko:</strong> {foodResponseData.risk_level}
+                            <strong>Prediksi ML:</strong> {foodResponseData.ml_prediction}
                           </span>
                         </div>
                         <div className="flex items-center">
                           <Shield className="w-4 h-4 mr-2 text-green-600" />
                           <span>
-                            <strong>Filter GI:</strong> {foodResponseData.gi_filter}
+                            <strong>Strategi GI:</strong> {foodResponseData.gi_strategy}
                           </span>
                         </div>
                         <div className="flex items-center">
@@ -818,23 +813,23 @@ export default function PrediksiPageEnhanced() {
                     <div className="mt-6 p-4 bg-white bg-opacity-60 rounded-xl">
                       <h5 className="font-semibold text-green-700 mb-3 flex items-center">
                         <Info className="h-5 w-5 mr-2" />
-                        Tips Konsumsi Berdasarkan Filtering GI
+                        Tips Konsumsi Berdasarkan Prediksi ML
                       </h5>
                       <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
                         <div>
-                          <h6 className="font-medium text-green-600 mb-1">✅ GI Sangat Rendah (≤35):</h6>
+                          <h6 className="font-medium text-red-600 mb-1">🔴 Risiko Tinggi:</h6>
                           <ul className="space-y-1 text-xs">
-                            <li>• Sangat aman untuk diabetes</li>
-                            <li>• Dapat dikonsumsi tanpa batasan ketat</li>
-                            <li>• Membantu kontrol gula darah optimal</li>
+                            <li>• Prioritaskan makanan GI terendah</li>
+                            <li>• Kontrol porsi dengan ketat</li>
+                            <li>• Konsultasi dengan dokter</li>
                           </ul>
                         </div>
                         <div>
-                          <h6 className="font-medium text-blue-600 mb-1">✅ GI Rendah (36-50):</h6>
+                          <h6 className="font-medium text-green-600 mb-1">🟢 Risiko Rendah:</h6>
                           <ul className="space-y-1 text-xs">
-                            <li>• Aman untuk diabetes</li>
-                            <li>• Konsumsi dalam porsi normal</li>
-                            <li>• Kombinasikan dengan protein dan serat</li>
+                            <li>• Variasi makanan lebih fleksibel</li>
+                            <li>• Tetap jaga pola makan sehat</li>
+                            <li>• Rutin olahraga dan cek kesehatan</li>
                           </ul>
                         </div>
                       </div>
@@ -853,8 +848,8 @@ export default function PrediksiPageEnhanced() {
                 <div>
                   <h3 className="text-lg font-medium text-blue-800 mb-3">Catatan Penting</h3>
                   <p className="text-blue-700 leading-relaxed">
-                    Hasil prediksi dan rekomendasi makanan ini hanya bersifat indikatif dan tidak menggantikan diagnosis medis profesional.
-                    Selalu konsultasikan dengan dokter atau ahli gizi untuk saran medis yang tepat.
+                    Hasil prediksi dan rekomendasi makanan ini hanya bersifat indikatif dan tidak menggantikan diagnosis
+                    medis profesional. Selalu konsultasikan dengan dokter atau ahli gizi untuk saran medis yang tepat.
                   </p>
                 </div>
               </div>
