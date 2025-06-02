@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Architecture Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .main-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            min-height: 800px;
+        }
+
+        /* User Interaction Section */
+        .user-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .user-box {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .user-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .interaction-item {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Frontend Core Section */
+        .frontend-core {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .react-container {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            position: relative;
+        }
+
+        .react-logo {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .component {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .component:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.25);
+        }
+
+        .state-management {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            margin: 15px 0;
+        }
+
+        .state-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .state-item {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        /* Backend Integration Section */
+        .backend-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .api-container {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        .api-endpoint {
+            background: rgba(255,255,255,0.15);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .database-box {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+
+        /* Arrows and Connections */
+        .arrow {
+            position: relative;
+            height: 3px;
+            background: #4f46e5;
+            margin: 10px 0;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #4f46e5;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+        }
+
+        .vertical-arrow {
+            width: 3px;
+            height: 30px;
+            background: #4f46e5;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .vertical-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -5px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid #4f46e5;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+        }
+
+        /* Data Flow Visualization */
+        .data-flow {
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+        }
+
+        .step-number {
+            background: rgba(255,255,255,0.3);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        /* Technology Stack */
+        .tech-stack {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.15);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        /* Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Frontend Architecture Visualization</h1>
+            <p>DiabCare React/Next.js Frontend System</p>
+        </div>
+
+        <div class="main-content">
+            <!-- User Interaction Section -->
+            <div class="user-section">
+                <div class="user-box">
+                    <div class="user-icon">👤</div>
+                    <h3>User Interactions</h3>
+                    
+                    <div class="interaction-item">
+                        <strong>📝 Form Input</strong><br>
+                        <small>Health data entry</small>
+                    </div>
+                    
+                    <div class="interaction-item">
+                        <strong>🔍 Search</strong><br>
+                        <small>Food recommendations</small>
+                    </div>
+                    
+                    <div class="interaction-item">
+                        <strong>📊 View Results</strong><br>
+                        <small>Prediction analysis</small>
+                    </div>
+                    
+                    <div class="interaction-item">
+                        <strong>📱 Navigation</strong><br>
+                        <small>Page transitions</small>
+                    </div>
+                </div>
+
+                <div class="arrow"></div>
+
+                <div class="data-flow">
+                    <h4>📈 Data Flow Steps</h4>
+                    
+                    <div class="flow-step slide-in">
+                        <div class="step-number">1</div>
+                        <div>User inputs health data</div>
+                    </div>
+                    
+                    <div class="flow-step slide-in">
+                        <div class="step-number">2</div>
+                        <div>Form validation & state update</div>
+                    </div>
+                    
+                    <div class="flow-step slide-in">
+                        <div class="step-number">3</div>
+                        <div>API request to backend</div>
+                    </div>
+                    
+                    <div class="flow-step slide-in">
+                        <div class="step-number">4</div>
+                        <div>Response processing</div>
+                    </div>
+                    
+                    <div class="flow-step slide-in">
+                        <div class="step-number">5</div>
+                        <div>UI re-render with results</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Frontend Core Section -->
+            <div class="frontend-core">
+                <div class="react-container">
+                    <div class="react-logo">⚛️</div>
+                    <h3>React/Next.js Core</h3>
+                    
+                    <div class="component-grid">
+                        <div class="component">
+                            <div style="font-size: 1.5rem;">🏠</div>
+                            <strong>App Component</strong><br>
+                            <small>Main application</small>
+                        </div>
+                        
+                        <div class="component">
+                            <div style="font-size: 1.5rem;">📊</div>
+                            <strong>Dashboard</strong><br>
+                            <small>Overview page</small>
+                        </div>
+                        
+                        <div class="component">
+                            <div style="font-size: 1.5rem;">📝</div>
+                            <strong>Form Component</strong><br>
+                            <small>Input handling</small>
+                        </div>
+                        
+                        <div class="component">
+                            <div style="font-size: 1.5rem;">🎯</div>
+                            <strong>Prediction View</strong><br>
+                            <small>Results display</small>
+                        </div>
+                        
+                        <div class="component">
+                            <div style="font-size: 1.5rem;">🍎</div>
+                            <strong>Food Cards</strong><br>
+                            <small>Recommendations</small>
+                        </div>
+                        
+                        <div class="component">
+                            <div style="font-size: 1.5rem;">📈</div>
+                            <strong>Charts</strong><br>
+                            <small>Data visualization</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="vertical-arrow pulse"></div>
+
+                <div class="state-management">
+                    <h4>🔄 State Management</h4>
+                    
+                    <div class="state-flow">
+                        <div class="state-item">
+                            <strong>📝 Form State</strong><br>
+                            <small>Input values</small>
+                        </div>
+                        
+                        <div class="state-item">
+                            <strong>🎯 Prediction State</strong><br>
+                            <small>ML results</small>
+                        </div>
+                        
+                        <div class="state-item">
+                            <strong>🍎 Food State</strong><br>
+                            <small>Recommendations</small>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 15px;">
+                        <strong>React Hooks:</strong> useState, useEffect, useContext
+                    </div>
+                </div>
+
+                <div class="vertical-arrow pulse"></div>
+
+                <div class="tech-stack">
+                    <h4>🛠️ Technology Stack</h4>
+                    
+                    <div class="tech-grid">
+                        <div class="tech-item">⚛️ React 18</div>
+                        <div class="tech-item">🔺 Next.js 14</div>
+                        <div class="tech-item">🎨 Tailwind CSS</div>
+                        <div class="tech-item">📊 Plotly.js</div>
+                        <div class="tech-item">📡 Axios</div>
+                        <div class="tech-item">🎯 React Router</div>
+                        <div class="tech-item">🔧 React Hooks</div>
+                        <div class="tech-item">📱 Responsive</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Backend Integration Section -->
+            <div class="backend-section">
+                <div class="api-container">
+                    <h3>🌐 API Integration</h3>
+                    
+                    <div class="api-endpoint">
+                        <span><strong>POST</strong> /predict</span>
+                        <span>🎯</span>
+                    </div>
+                    
+                    <div class="api-endpoint">
+                        <span><strong>GET</strong> /recommend_food</span>
+                        <span>🍎</span>
+                    </div>
+                    
+                    <div class="api-endpoint">
+                        <span><strong>GET</strong> /health</span>
+                        <span>💚</span>
+                    </div>
+                    
+                    <div style="margin-top: 15px; text-align: center;">
+                        <strong>📡 HTTP Client:</strong> Fetch API / Axios
+                    </div>
+                </div>
+
+                <div class="arrow"></div>
+
+                <div class="database-box">
+                    <h4>🐍 Flask Backend</h4>
+                    
+                    <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <div style="margin: 8px 0;">🤖 <strong>ML Model</strong> - Prediction engine</div>
+                        <div style="margin: 8px 0;">📊 <strong>Data Processing</strong> - Input validation</div>
+                        <div style="margin: 8px 0;">🍎 <strong>Food Engine</strong> - Recommendations</div>
+                        <div style="margin: 8px 0;">🐘 <strong>PostgreSQL</strong> - Data storage</div>
+                    </div>
+                </div>
+
+                <div class="arrow"></div>
+
+                <div style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; padding: 20px; border-radius: 15px;">
+                    <h4>📱 UI Rendering</h4>
+                    
+                    <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                        <div style="margin: 8px 0;">🎨 <strong>Virtual DOM</strong> - Efficient updates</div>
+                        <div style="margin: 8px 0;">📱 <strong>Responsive</strong> - Mobile-first</div>
+                        <div style="margin: 8px 0;">⚡ <strong>Performance</strong> - Optimized rendering</div>
+                        <div style="margin: 8px 0;">🎯 <strong>Accessibility</strong> - WCAG compliant</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const components = document.querySelectorAll('.component');
+            
+            components.forEach((component, index) => {
+                setTimeout(() => {
+                    component.style.animation = 'slideIn 0.5s ease-out';
+                }, index * 100);
+            });
+
+            // Add click interactions
+            components.forEach(component => {
+                component.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

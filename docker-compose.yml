@@ -1,0 +1,22 @@
+version: '3'
+services:
+  backend:
+    build: ./backend # Pastikan path ini sesuai dengan lokasi backend Anda
+    ports:
+      - "3001:3001" # Aplikasi backend berjalan di port 3001 di dalam container
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - backend
